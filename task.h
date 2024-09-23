@@ -15,8 +15,6 @@ public:
     explicit task(QWidget *parent = nullptr);
     ~task();
 
-<<<<<<< Updated upstream
-=======
     QString getTitle ();
     void SetTitle(QString);
 
@@ -27,8 +25,6 @@ public:
 
     QPushButton* getDeleteButton();
 
-
->>>>>>> Stashed changes
 private:
     Ui::task *ui;
 };

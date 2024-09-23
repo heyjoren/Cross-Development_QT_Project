@@ -132,12 +132,17 @@ void Smiley::paintSmile(QPainter *painter, const QRect &r) {
     int spanAngle;
     int smileOffset;
     QPoint startPoint, endPoint;
+    QRect adjustedRect;
 
     switch (currentMood) {
     case Blij:
         startAngle = 0;
         spanAngle = -180 * 16;
         smileOffset = -5;
+
+        adjustedRect = r.adjusted(0, smileOffset, 0, smileOffset);
+        painter->drawArc(adjustedRect, startAngle, spanAngle);
+        painter->restore();
         break;
     case Neutraal:
         startAngle = 0;
@@ -153,10 +158,10 @@ void Smiley::paintSmile(QPainter *painter, const QRect &r) {
         startAngle = 0;
         spanAngle = 180 * 16;
         smileOffset = 20;
+
+        adjustedRect = r.adjusted(0, smileOffset, 0, smileOffset);
+        painter->drawArc(adjustedRect, startAngle, spanAngle);
+        painter->restore();
         break;
     }
-
-    QRect adjustedRect = r.adjusted(0, smileOffset, 0, smileOffset);
-    painter->drawArc(adjustedRect, startAngle, spanAngle);
-    painter->restore();
 }
