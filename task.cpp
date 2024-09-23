@@ -6,6 +6,8 @@ task::task(QWidget *parent)
     , ui(new Ui::task)
 {
     ui->setupUi(this);
+    this->setMinimumSize(QSize(540,250));
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 task::~task()
@@ -31,13 +33,13 @@ void task::SetTitle(QString title)
 QString task::getTodo()
 {
     QString todo;
-    todo = ui->lbTodo->text();
+    // todo = ui->teTodo;
     return todo;
 }
 
 void task::SetTodo(QString todo)
 {
-    ui->lbTodo->setText(todo);
+    ui->teTodo->setText(todo);
 }
 
 bool task::getKlaarStatus()
@@ -50,4 +52,9 @@ bool task::getKlaarStatus()
 QPushButton* task::getDeleteButton()
 {
     return ui->pbDelete;
+}
+
+QCheckBox* task::getKlaarCheckbox()
+{
+    return ui->chBoxKlaar;
 }
