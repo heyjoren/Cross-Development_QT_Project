@@ -9,7 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     ui->smiley->setMood(Smiley::Blij);
-
     //verwijder test en test in header
     test = 0;
 
