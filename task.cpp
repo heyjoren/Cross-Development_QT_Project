@@ -12,8 +12,6 @@ task::~task()
 {
     delete ui;
 }
-<<<<<<< Updated upstream
-=======
 
 QString task::getTitle()
 {
@@ -53,4 +51,3 @@ QPushButton* task::getDeleteButton()
 {
     return ui->pbDelete;
 }
->>>>>>> Stashed changes
