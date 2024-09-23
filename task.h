@@ -15,6 +15,17 @@ public:
     explicit task(QWidget *parent = nullptr);
     ~task();
 
+    QString getTitle ();
+    void SetTitle(QString);
+
+    QString getTodo ();
+    void SetTodo(QString);
+
+    bool getKlaarStatus ();
+
+
+
+
 private:
     Ui::task *ui;
 };
