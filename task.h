@@ -1,7 +1,7 @@
 #ifndef TASK_H
 #define TASK_H
 
-#include <QWidget>
+#include <QtWidgets>
 
 namespace Ui {
 class task;
@@ -23,8 +23,7 @@ public:
 
     bool getKlaarStatus ();
 
-
-
+    QPushButton* getDeleteButton();
 
 private:
     Ui::task *ui;

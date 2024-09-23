@@ -46,3 +46,8 @@ bool task::getKlaarStatus()
     status = ui->chBoxKlaar->checkState();
     return status;
 }
+
+QPushButton* task::getDeleteButton()
+{
+    return ui->pbDelete;
+}
