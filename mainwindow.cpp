@@ -8,9 +8,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->smiley->setMood(Smiley::Blij);
-    //verwijder test en test in header
+    ui->smiley->setMood(Smiley::Neutraal);
+
+    //TEST
+    //verwijder test en test in header en op regel 43
     test = 0;
+    // TEST tot hier
+
+    connect(ui->pbAddTask, &QPushButton::clicked,  this, &MainWindow::updateSmileyStatus);
 
 }
 
@@ -36,9 +41,26 @@ void MainWindow::on_pbAddTask_clicked()
 
     connect(taak->getDeleteButton(), &QPushButton::clicked, this, [=]() {
         onTaskDeleted(taak);
+        emit taak->statusChanged();
     });
 
+    connect(taak->getKlaarCheckbox(), &QCheckBox::stateChanged, this, [=]() {
+        emit taak->statusChanged();
+    });
+
+    //TEST
+
+    qDebug() << "m_listTask add = " << m_listTask;
+
     test ++;
+
+    if (test == 1){
+        taak->SetTodo("De moderne technologie heeft onze manier van leven in ongekende mate veranderd. Van communicatie tot gezondheidszorg, en van transport tot entertainment, technologie speelt een centrale rol in bijna elk aspect van ons leven. Maar hoe is het zover gekomen? Laten we eens een kijkje nemen in de geschiedenis van de moderne technologie, die haar wortels heeft in enkele van de belangrijkste uitvindingen en ontwikkelingen van de afgelopen eeuwen.");
+    }
+
+    //TEST tot hier
+
+    connect(taak, &task::statusChanged, this, &MainWindow::updateSmileyStatus);
 
 }
 
@@ -49,5 +71,35 @@ void MainWindow::onTaskDeleted(task* taak)
     ui->scrollAreaWidgetContents->layout()->removeWidget(taak);
 
     taak->deleteLater();
+}
+
+void MainWindow::updateSmileyStatus()
+{
+    int totaal = m_listTask.count();
+    int aangevinkt = 0;
+
+    for (const auto& taak : m_listTask) {
+        if (taak->getKlaarCheckbox()->isChecked()) {
+            aangevinkt++;
+        }
+    }
+
+    if (totaal == 0) {
+        ui->smiley->setMood(Smiley::Neutraal);
+        return;
+    }
+
+    double percentage = static_cast<double>(aangevinkt) / totaal * 100;
+
+    if (percentage < 40) {
+        ui->smiley->setMood(Smiley::Sip);
+
+    } else if (percentage >= 40 && percentage <= 60) {
+        ui->smiley->setMood(Smiley::Neutraal);
+
+    } else if (percentage > 60) {
+        ui->smiley->setMood(Smiley::Blij);
+    }
+
 }
 

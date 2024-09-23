@@ -24,6 +24,10 @@ public:
     bool getKlaarStatus ();
 
     QPushButton* getDeleteButton();
+    QCheckBox* getKlaarCheckbox();
+
+signals:
+    void statusChanged();
 
 private:
     Ui::task *ui;

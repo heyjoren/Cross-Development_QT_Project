@@ -26,9 +26,12 @@ private slots:
 
     void onTaskDeleted(task* taak);
 
+    void updateSmileyStatus();
+
 private:
     Ui::MainWindow *ui;
     QList<task*> m_listTask;
+
     int test;
 };
 #endif // MAINWINDOW_H
