@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "smiley.h"
+#include "task.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,7 +22,13 @@ public:
 private slots:
     void on_actionexit_triggered();
 
+    void on_pbAddTask_clicked();
+
+    void onTaskDeleted(task* taak);
+
 private:
     Ui::MainWindow *ui;
+    QList<task*> m_listTask;
+    int test;
 };
 #endif // MAINWINDOW_H
