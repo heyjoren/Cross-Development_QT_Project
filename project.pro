@@ -11,14 +11,17 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    smiley.cpp
+    smiley.cpp \
+    task.cpp
 
 HEADERS += \
     mainwindow.h \
-    smiley.h
+    smiley.h \
+    task.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    task.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
