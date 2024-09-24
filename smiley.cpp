@@ -1,4 +1,6 @@
 #include "smiley.h"
+#include "qevent.h"
+#include "qpainterpath.h"
 #include <QPainter>
 
 Smiley::Smiley(QWidget *parent)

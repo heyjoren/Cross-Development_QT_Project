@@ -10,6 +10,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->smiley->setMood(Smiley::Neutraal);
 
+    this->setWindowTitle("To do list");
+
+    ui->stackedWidget->setCurrentWidget(ui->pageHome);
+
     //TEST
     //verwijder test en test in header en op regel 43
     test = 0;
@@ -32,36 +36,10 @@ void MainWindow::on_actionexit_triggered()
 
 void MainWindow::on_pbAddTask_clicked()
 {
-    auto taak = new task();
-    m_listTask.append(taak);
+    ui->tEditToDo->setText("");
+    ui->lETitle->setText("");
 
-    taak->SetTitle(QString::number(test));
-
-    ui->tasksLayout->insertWidget(ui->tasksLayout->count() -1, taak);
-
-    connect(taak->getDeleteButton(), &QPushButton::clicked, this, [=]() {
-        onTaskDeleted(taak);
-        emit taak->statusChanged();
-    });
-
-    connect(taak->getKlaarCheckbox(), &QCheckBox::stateChanged, this, [=]() {
-        emit taak->statusChanged();
-    });
-
-    //TEST
-
-    qDebug() << "m_listTask add = " << m_listTask;
-
-    test ++;
-
-    if (test == 1){
-        taak->SetTodo("De moderne technologie heeft onze manier van leven in ongekende mate veranderd. Van communicatie tot gezondheidszorg, en van transport tot entertainment, technologie speelt een centrale rol in bijna elk aspect van ons leven. Maar hoe is het zover gekomen? Laten we eens een kijkje nemen in de geschiedenis van de moderne technologie, die haar wortels heeft in enkele van de belangrijkste uitvindingen en ontwikkelingen van de afgelopen eeuwen.");
-    }
-
-    //TEST tot hier
-
-    connect(taak, &task::statusChanged, this, &MainWindow::updateSmileyStatus);
-
+    ui->stackedWidget->setCurrentWidget(ui->pageFillIn);
 }
 
 void MainWindow::onTaskDeleted(task* taak)
@@ -101,5 +79,38 @@ void MainWindow::updateSmileyStatus()
         ui->smiley->setMood(Smiley::Blij);
     }
 
+}
+
+
+void MainWindow::on_pbBack_clicked()
+{
+
+    ui->stackedWidget->setCurrentWidget(ui->pageHome);
+}
+
+
+void MainWindow::on_pbAdd_clicked()
+{
+    auto taak = new task();
+    m_listTask.append(taak);
+
+    taak->SetTitle(ui->lETitle->text());
+
+    ui->tasksLayout->insertWidget(ui->tasksLayout->count() -1, taak);
+
+    connect(taak->getDeleteButton(), &QPushButton::clicked, this, [=]() {
+        onTaskDeleted(taak);
+        emit taak->statusChanged();
+    });
+
+    connect(taak->getKlaarCheckbox(), &QCheckBox::stateChanged, this, [=]() {
+        emit taak->statusChanged();
+    });
+
+    taak->SetTodo(ui->tEditToDo->toPlainText());
+
+    connect(taak, &task::statusChanged, this, &MainWindow::updateSmileyStatus);
+
+    ui->stackedWidget->setCurrentWidget(ui->pageHome);
 }
 
