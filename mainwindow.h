@@ -28,6 +28,10 @@ private slots:
 
     void updateSmileyStatus();
 
+    void on_pbBack_clicked();
+
+    void on_pbAdd_clicked();
+
 private:
     Ui::MainWindow *ui;
     QList<task*> m_listTask;
