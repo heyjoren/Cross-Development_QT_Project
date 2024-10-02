@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "smiley.h"
 #include "task.h"
+#include "selectfile.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,15 +23,21 @@ public:
 private slots:
     void on_actionexit_triggered();
 
-    void on_pbAddTask_clicked();
-
     void onTaskDeleted(task* taak);
 
     void updateSmileyStatus();
 
-    void on_pbBack_clicked();
+    // void on_pbBack_clicked();
 
     void on_pbAdd_clicked();
+
+    void addToChangeToTaskScreen();
+
+    void setHomeScreen();
+
+    void setTaskScreen();
+
+    void on_actionsave_triggered();
 
 private:
     Ui::MainWindow *ui;

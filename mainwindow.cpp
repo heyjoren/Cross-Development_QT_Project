@@ -1,6 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+/*
+ * Tooltip wilt niet getoont worden.
+ * window icon instellen (smiley tonen inclusief status)
+ * */
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -12,9 +16,19 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setWindowTitle("To do list");
 
-    ui->stackedWidget->setCurrentWidget(ui->pageHome);
+    // ui->stackedWidget->setCurrentWidget(ui->pageHome);
+
+    connect(ui->pbAddTask, &QPushButton::clicked, this, &MainWindow::addToChangeToTaskScreen);
+    // connect(ui->aAdd, &QAction::triggered, this, &MainWindow::addToChangeToTaskScreen);
+    connect(ui->pbBack, &QPushButton::clicked, this, &MainWindow::setHomeScreen);
+    connect(ui->aHomePage, &QAction::triggered, this, &MainWindow::setHomeScreen);
+    connect(ui->aAddTask, &QAction::triggered, this, &MainWindow::setTaskScreen);
 
     //TEST
+
+    // tooltip is ingesteld via de designer
+    ui->aAddTask->setToolTip("<p>werkt dit wel</p>");
+
     //verwijder test en test in header en op regel 43
     test = 0;
     // TEST tot hier
@@ -33,15 +47,6 @@ void MainWindow::on_actionexit_triggered()
     QApplication::quit();
 }
 
-
-void MainWindow::on_pbAddTask_clicked()
-{
-    ui->tEditToDo->setText("");
-    ui->lETitle->setText("");
-
-    ui->stackedWidget->setCurrentWidget(ui->pageFillIn);
-}
-
 void MainWindow::onTaskDeleted(task* taak)
 {
     m_listTask.removeOne(taak);
@@ -53,6 +58,7 @@ void MainWindow::onTaskDeleted(task* taak)
 
 void MainWindow::updateSmileyStatus()
 {
+    qDebug() << "in de functie updateSmileyStatus";
     int totaal = m_listTask.count();
     int aangevinkt = 0;
 
@@ -82,11 +88,11 @@ void MainWindow::updateSmileyStatus()
 }
 
 
-void MainWindow::on_pbBack_clicked()
-{
+// void MainWindow::on_pbBack_clicked()
+// {
 
-    ui->stackedWidget->setCurrentWidget(ui->pageHome);
-}
+//     ui->stackedWidget->setCurrentWidget(ui->pageHome);
+// }
 
 
 void MainWindow::on_pbAdd_clicked()
@@ -112,5 +118,33 @@ void MainWindow::on_pbAdd_clicked()
     connect(taak, &task::statusChanged, this, &MainWindow::updateSmileyStatus);
 
     ui->stackedWidget->setCurrentWidget(ui->pageHome);
+}
+
+void MainWindow::addToChangeToTaskScreen()
+{
+    ui->tEditToDo->setText("");
+    ui->lETitle->setText("");
+
+    // ui->stackedWidget->setCurrentWidget(ui->pageFillIn);
+    setTaskScreen();
+}
+
+void MainWindow::setHomeScreen()
+{
+    ui->stackedWidget->setCurrentWidget(ui->pageHome);
+}
+
+void MainWindow::setTaskScreen()
+{
+    ui->stackedWidget->setCurrentWidget(ui->pageFillIn);
+}
+
+
+void MainWindow::on_actionsave_triggered()
+{
+    auto selectFile = new Selectfile;
+
+    selectFile->setWindowTitle("Choose a file to save");
+    selectFile->show();
 }
 

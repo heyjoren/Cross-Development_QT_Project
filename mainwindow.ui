@@ -24,7 +24,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pageHome">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -146,29 +146,50 @@
    </property>
    <widget class="QMenu" name="menuexit">
     <property name="title">
-     <string>Exit</string>
+     <string>settings</string>
     </property>
+    <addaction name="separator"/>
     <addaction name="actionexit"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="separator"/>
     <addaction name="actionsave"/>
     <addaction name="actionopen"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+    <addaction name="aHomePage"/>
+    <addaction name="aAddTask"/>
+   </widget>
    <addaction name="menuexit"/>
    <addaction name="menuFile"/>
+   <addaction name="menuView"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionexit">
    <property name="text">
     <string>exit</string>
    </property>
+   <property name="shortcut">
+    <string>F12</string>
+   </property>
   </action>
   <action name="actionsave">
    <property name="text">
     <string>save</string>
+   </property>
+   <property name="toolTip">
+    <string>Save the task in a file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionopen">
@@ -179,6 +200,28 @@
   <action name="actionsave_2">
    <property name="text">
     <string>save</string>
+   </property>
+  </action>
+  <action name="aHomePage">
+   <property name="text">
+    <string>Home</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Let you view the home page where you can see all yours tasks that you have done and need to do. with a smiley as reference bar&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="aAddTask">
+   <property name="text">
+    <string>Add task</string>
+   </property>
+   <property name="toolTip">
+    <string>test</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
    </property>
   </action>
  </widget>

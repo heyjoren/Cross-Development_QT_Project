@@ -9,18 +9,24 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    confirmcancel.cpp \
     main.cpp \
     mainwindow.cpp \
+    selectfile.cpp \
     smiley.cpp \
     task.cpp
 
 HEADERS += \
+    confirmcancel.h \
     mainwindow.h \
+    selectfile.h \
     smiley.h \
     task.h
 
 FORMS += \
+    confirmcancel.ui \
     mainwindow.ui \
+    selectfile.ui \
     task.ui
 
 # Default rules for deployment.
