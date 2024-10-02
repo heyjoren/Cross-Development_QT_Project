@@ -19,12 +19,10 @@ void Selectfile::on_pbCancel_clicked()
     // ConfirmCancel cancelDialog(this);
     if (cancel->exec() == QDialog::Accepted)
     {
-        qDebug() << "if";
         cancel->close();
     }
     else
     {
-        qDebug() << "else";
         cancel->close();
         ui->lAFile->clear();
         this->close();
