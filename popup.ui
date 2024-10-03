@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>confirmCancel</class>
- <widget class="QDialog" name="confirmCancel">
+ <class>popup</class>
+ <widget class="QDialog" name="popup">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>176</width>
-    <height>67</height>
+    <height>62</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Confirm</string>
+   <string>Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="lTypeMssg">
      <property name="text">
-      <string>Are you sure you want to cancel?</string>
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lMssg">
+     <property name="text">
+      <string>TextLabel</string>
      </property>
     </widget>
    </item>
@@ -38,7 +45,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>confirmCancel</receiver>
+   <receiver>popup</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -54,7 +61,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>confirmCancel</receiver>
+   <receiver>popup</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

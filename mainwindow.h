@@ -5,6 +5,7 @@
 #include "smiley.h"
 #include "task.h"
 #include "selectfile.h"
+#include <QtWidgets>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
