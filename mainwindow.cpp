@@ -145,6 +145,7 @@ void MainWindow::on_actionsave_triggered()
     auto selectFile = new Selectfile;
 
     selectFile->setWindowTitle("Choose a file to save");
-    selectFile->show();
+    // selectFile->show();
+    selectFile->exec();
 }
 

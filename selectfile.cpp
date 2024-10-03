@@ -1,7 +1,7 @@
 #include "selectfile.h"
 #include "ui_selectfile.h"
 
-#include <QtWidgets>>
+#include <QtWidgets>
 
 Selectfile::Selectfile(QWidget *parent)
     : QDialog(parent)
@@ -64,11 +64,30 @@ void Selectfile::on_pbSave_clicked()
 
         if(fileInfo.isFile() && fileInfo.exists())
         {
+            // EERST ZIEN OF HET EEN FILE IS.
+            // DAN ZIEN OF HIJ BESTAAT OF NIET
+
             qDebug() << "gelukt";
         }
         else if(fileInfo.isDir())
         {
             //vraag naam van de file
+            bool ok;
+            QString fileNaam;
+            do {
+                fileNaam = QInputDialog::getText(this, "Enter File Name", "Please enter a file name:", QLineEdit::Normal, "", &ok);
+
+                if (!ok) {
+                    QMessageBox::warning(this, "Input Required", "You must enter a valid file name.");
+                }
+            } while (!ok || fileNaam.isEmpty());
+
+            //Windows file toevoegen aan pad
+            QString completeFilePath = fileInfo.absoluteFilePath() + "/" + fileNaam;
+
+            fileInfo = QFileInfo(completeFilePath);
+
+            qDebug() << "Nieuw volledig pad met bestandsnaam: " << fileInfo.absoluteFilePath();
         }
         else
         {
