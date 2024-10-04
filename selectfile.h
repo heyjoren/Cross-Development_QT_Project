@@ -2,7 +2,7 @@
 #define SELECTFILE_H
 
 #include <QDialog>
-#include "confirmcancel.h"
+#include "popup.h"
 
 namespace Ui {
 class Selectfile;
@@ -16,10 +16,14 @@ public:
     explicit Selectfile(QWidget *parent = nullptr);
     ~Selectfile();
 
+    QFileInfo getFileInfo();
+
 private slots:
     void on_pbCancel_clicked();
 
     void on_pbSave_clicked();
+
+    void chooseFile();
 
 private:
     Ui::Selectfile *ui;

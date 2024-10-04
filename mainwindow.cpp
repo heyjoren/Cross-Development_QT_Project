@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 
 /*
- * Tooltip wilt niet getoont worden.
  * window icon instellen (smiley tonen inclusief status)
  * */
 
@@ -145,6 +144,7 @@ void MainWindow::on_actionsave_triggered()
     auto selectFile = new Selectfile;
 
     selectFile->setWindowTitle("Choose a file to save");
-    selectFile->show();
+    // selectFile->show();
+    selectFile->exec();
 }
 
