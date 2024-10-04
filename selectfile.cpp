@@ -62,12 +62,22 @@ void Selectfile::on_pbSave_clicked()
     {
         QFileInfo fileInfo (ui->lEFile->text());
 
-        if(fileInfo.isFile() && fileInfo.exists())
+        qDebug() << fileInfo;
+
+        if(fileInfo.isFile())
         {
             // EERST ZIEN OF HET EEN FILE IS.
             // DAN ZIEN OF HIJ BESTAAT OF NIET
+            if(fileInfo.exists())
+            {
+                qDebug() << "Bestaat";
+            }
+            else
+            {
+                qDebug() << "is file maar bestaat niet";
+            }
 
-            qDebug() << "gelukt";
+
         }
         else if(fileInfo.isDir())
         {
@@ -107,7 +117,9 @@ void Selectfile::on_pbSave_clicked()
 
 void Selectfile::chooseFile()
 {
-    QString path = QFileDialog::getOpenFileName(this);
+    // geen getOpenFileName gebruiken maar getSaveFileName
+    // QString path = QFileDialog::getOpenFileName(this);
+    QString path = QFileDialog::getSaveFileName(this);
 
     ui->lEFile->setText(path);
 }

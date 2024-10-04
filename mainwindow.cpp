@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 
 /*
- * Tooltip wilt niet getoont worden.
  * window icon instellen (smiley tonen inclusief status)
  * */
 
