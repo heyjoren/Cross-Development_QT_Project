@@ -60,56 +60,28 @@ void Selectfile::on_pbSave_clicked()
     }
     else
     {
-        QFileInfo fileInfo (ui->lEFile->text());
+        QString path = ui->lEFile->text();
+        QFileInfo fileInfo (path);
 
         qDebug() << fileInfo;
 
-        if(fileInfo.isFile())
+        if(!fileInfo.isFile())
         {
-            // EERST ZIEN OF HET EEN FILE IS.
-            // DAN ZIEN OF HIJ BESTAAT OF NIET
-            if(fileInfo.exists())
+            if (fileInfo.suffix().isEmpty())
             {
-                qDebug() << "Bestaat";
-            }
-            else
-            {
-                qDebug() << "is file maar bestaat niet";
+                path +=".txt";
+                fileInfo = QFileInfo(path);
             }
 
-
-        }
-        else if(fileInfo.isDir())
-        {
-            //vraag naam van de file
-            bool ok;
-            QString fileNaam;
-            do {
-                fileNaam = QInputDialog::getText(this, "Enter File Name", "Please enter a file name:", QLineEdit::Normal, "", &ok);
-
-                if (!ok) {
-                    QMessageBox::warning(this, "Input Required", "You must enter a valid file name.");
-                }
-            } while (!ok || fileNaam.isEmpty());
-
-            //Windows file toevoegen aan pad
-            QString completeFilePath = fileInfo.absoluteFilePath() + "/" + fileNaam;
-
-            fileInfo = QFileInfo(completeFilePath);
-
-            qDebug() << "Nieuw volledig pad met bestandsnaam: " << fileInfo.absoluteFilePath();
-        }
-        else
-        {
-            auto error = new popup(this);
-            error->setTitle("Error");
-            error->setTypeMessage("Error:");
-            error->setMessage("Invalid file path. Please enter a valid file or directory.");
-            error->setButtons(QDialogButtonBox::Ok);
-
-            error->exec();
+            QFile file(path);
+            if (file.open(QIODevice::WriteOnly)) {
+                file.close(); // Sluit het bestand onmiddellijk nadat het is aangemaakt
+            } else {
+                QMessageBox::critical(this, "Error", "Could not create file: " + file.errorString());
+            }
         }
 
+        qDebug() << "op het einde" << fileInfo;
 
         this->close();
     }
