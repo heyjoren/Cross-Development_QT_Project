@@ -157,26 +157,7 @@ void MainWindow::on_actionsave_triggered()
         }
     }
 
-    QFile file(_fileInfo.filePath());
-
-    // Probeer het bestand te openen voor schrijven
-    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        QTextStream out(&file);
-
-        for (const auto& taak : m_listTask) {
-            out << "Title: " << taak->getTitle() << "\n";
-            out << "Todo: " << taak->getTodo() << "\n";
-            out << "Completed: " << (taak->getKlaarCheckbox()->isChecked() ? "Yes" : "No") << "\n";
-            out << "--------------------------\n";
-        }
-
-        out << "Totaal percentage gedaan: " << _percentage << "%\n";
-    }
-    else
-    {
-        QMessageBox::critical(this, "Error", "Could not open file: " + file.errorString());
-    }
+    saveToFile();
 }
 
 
@@ -260,5 +241,72 @@ void MainWindow::addTaskFromFile(const QString title, const QString todo, bool c
     });
 
     connect(taak, &task::statusChanged, this, &MainWindow::updateSmileyStatus);
+}
+
+
+void MainWindow::on_asave_as_triggered()
+{
+    // verplicht een file te kiezen.
+    QFile file(_fileInfo.filePath());
+
+    // Probeer het bestand te openen voor schrijven
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream out(&file);
+
+        for (const auto& taak : m_listTask) {
+            out << "Title: " << taak->getTitle() << "\n";
+            out << "Todo: " << taak->getTodo() << "\n";
+            out << "Completed: " << (taak->getKlaarCheckbox()->isChecked() ? "Yes" : "No") << "\n";
+            out << "--------------------------\n";
+        }
+
+        out << "Totaal percentage gedaan: " << _percentage << "%\n";
+    }
+    else
+    {
+        QMessageBox::critical(this, "Error", "Could not open file: " + file.errorString());
+    }
+
+    saveToFile();
+}
+
+void MainWindow::saveToFile()
+{
+    auto selectFile = new Selectfile;
+
+    selectFile->setWindowTitle("Choose a file to save");
+    // selectFile->exec();
+
+    int result = selectFile->exec();
+    qDebug() << "Dialog result:" << result;
+
+
+    if (result == QDialog::Accepted)
+    {
+        qDebug() << "in de if";
+        _fileInfo =  selectFile->getFileInfo();
+    }
+
+    QFile file(_fileInfo.filePath());
+
+    // Probeer het bestand te openen voor schrijven
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream out(&file);
+
+        for (const auto& taak : m_listTask) {
+            out << "Title: " << taak->getTitle() << "\n";
+            out << "Todo: " << taak->getTodo() << "\n";
+            out << "Completed: " << (taak->getKlaarCheckbox()->isChecked() ? "Yes" : "No") << "\n";
+            out << "--------------------------\n";
+        }
+
+        out << "Totaal percentage gedaan: " << _percentage << "%\n";
+    }
+    else
+    {
+        QMessageBox::critical(this, "Error", "Could not open file: " + file.errorString());
+    }
 }
 

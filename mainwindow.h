@@ -44,6 +44,10 @@ private slots:
 
     void addTaskFromFile(const QString title, const QString todo, bool);
 
+    void on_asave_as_triggered();
+
+    void saveToFile();
+
 private:
     Ui::MainWindow *ui;
     QList<task*> m_listTask;
