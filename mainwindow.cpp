@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // ui->stackedWidget->setCurrentWidget(ui->pageHome);
 
-    connect(ui->pbAddTask, &QPushButton::clicked, this, &MainWindow::addToChangeToTaskScreen);
+    connect(ui->pbAddTask, &QPushButton::clicked, this, &MainWindow::setTaskScreen);
     // connect(ui->aAdd, &QAction::triggered, this, &MainWindow::addToChangeToTaskScreen);
     connect(ui->pbBack, &QPushButton::clicked, this, &MainWindow::setHomeScreen);
     connect(ui->aHomePage, &QAction::triggered, this, &MainWindow::setHomeScreen);
@@ -116,15 +116,6 @@ void MainWindow::on_pbAdd_clicked()
     ui->stackedWidget->setCurrentWidget(ui->pageHome);
 }
 
-void MainWindow::addToChangeToTaskScreen()
-{
-    ui->tEditToDo->setText("");
-    ui->lETitle->setText("");
-
-    // ui->stackedWidget->setCurrentWidget(ui->pageFillIn);
-    setTaskScreen();
-}
-
 void MainWindow::setHomeScreen()
 {
     ui->stackedWidget->setCurrentWidget(ui->pageHome);
@@ -132,15 +123,16 @@ void MainWindow::setHomeScreen()
 
 void MainWindow::setTaskScreen()
 {
+    ui->tEditToDo->setText("");
+    ui->lETitle->setText("");
+
     ui->stackedWidget->setCurrentWidget(ui->pageFillIn);
 }
 
 
 void MainWindow::on_actionsave_triggered()
 {
-    //TEST
-    qDebug() << "save: " << _fileInfo;
-    //TEST tot hier
+
 
     if(_fileInfo.filePath().isEmpty())
     {
@@ -150,9 +142,11 @@ void MainWindow::on_actionsave_triggered()
 
         int result = selectFile->exec();
 
+
         if (result == QDialog::Accepted)
         {
             _fileInfo =  selectFile->getFileInfo();
+            selectFile->deleteLater();
         }
     }
 
@@ -292,18 +286,6 @@ void MainWindow::on_asave_as_triggered()
 
 void MainWindow::saveToFile()
 {
-    auto selectFile = new Selectfile;
-
-    selectFile->setWindowTitle("Choose a file to save");
-    // selectFile->exec();
-
-    int result = selectFile->exec();
-
-    if (result == QDialog::Accepted)
-    {
-        _fileInfo =  selectFile->getFileInfo();
-    }
-
     QFile file(_fileInfo.filePath());
 
     // Probeer het bestand te openen voor schrijven

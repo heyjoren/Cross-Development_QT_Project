@@ -32,8 +32,6 @@ private slots:
 
     void on_pbAdd_clicked();
 
-    void addToChangeToTaskScreen();
-
     void setHomeScreen();
 
     void setTaskScreen();
