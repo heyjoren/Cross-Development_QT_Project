@@ -33,7 +33,7 @@ void task::SetTitle(QString title)
 QString task::getTodo()
 {
     QString todo;
-    // todo = ui->teTodo;
+    todo = ui->teTodo->toPlainText();
     return todo;
 }
 

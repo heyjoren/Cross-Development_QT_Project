@@ -32,14 +32,12 @@ void Selectfile::on_pbCancel_clicked()
     cancel->setMessage("Are you sure you want to cancel?");
     if (cancel->exec() == QDialog::Accepted)
     {
-        qDebug()<< "if (accepted)";
         cancel->close();
         ui->lEFile->clear();
         this->close();
     }
     else
     {
-        qDebug()<< "else (rejected)";
         cancel->close();
     }
 }
@@ -63,8 +61,6 @@ void Selectfile::on_pbSave_clicked()
         QString path = ui->lEFile->text();
         QFileInfo fileInfo (path);
 
-        qDebug() << fileInfo;
-
         if(!fileInfo.isFile())
         {
             if (fileInfo.suffix().isEmpty())
@@ -80,18 +76,18 @@ void Selectfile::on_pbSave_clicked()
                 QMessageBox::critical(this, "Error", "Could not create file: " + file.errorString());
             }
         }
-
-        qDebug() << "op het einde" << fileInfo;
-
-        this->close();
+        this->accept();
     }
 }
 
 void Selectfile::chooseFile()
 {
-    // geen getOpenFileName gebruiken maar getSaveFileName
-    // QString path = QFileDialog::getOpenFileName(this);
-    QString path = QFileDialog::getSaveFileName(this);
+    QString path = QFileDialog::getSaveFileName(
+        this,
+        "Save File",
+        "",
+        "Text Files (*.txt);;All Files (*)"
+        );
 
     ui->lEFile->setText(path);
 }

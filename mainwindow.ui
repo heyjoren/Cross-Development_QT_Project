@@ -196,6 +196,9 @@
    <property name="text">
     <string>open</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="actionsave_2">
    <property name="text">

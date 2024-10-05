@@ -40,10 +40,21 @@ private slots:
 
     void on_actionsave_triggered();
 
+    void on_actionopen_triggered();
+
+    void addTaskFromFile(const QString title, const QString todo, bool);
+
 private:
     Ui::MainWindow *ui;
     QList<task*> m_listTask;
 
+
+    //TEST
     int test;
+    //TEST tot hier
+
+    QFileInfo _fileInfo;
+
+    double _percentage;
 };
 #endif // MAINWINDOW_H
