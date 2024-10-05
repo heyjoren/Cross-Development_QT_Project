@@ -209,23 +209,27 @@ void MainWindow::on_actionopen_triggered()
 
             QString title;
             QString todo;
-            bool completed = false;
+            bool completed, add = false;
+
 
             while (!in.atEnd()) {
                 QString line = in.readLine();
                 if (line.startsWith("Title: ")) {
-                    if (!title.isEmpty()) {
-                        addTaskFromFile(title, todo, completed);
-                        title.clear();
-                        todo.clear();
-                        completed = false;
-                    }
                     title = line.mid(7);
                 } else if (line.startsWith("Todo: ")) {
                     todo = line.mid(6);
                 } else if (line.startsWith("Completed: ")) {
                     QString status = line.mid(11);
                     completed = (status == "Yes");
+                    add = true;
+                }
+                if (add){
+                    qDebug() << "titel: " << title << "todo: " << todo <<"compl: " << completed;
+                        addTaskFromFile(title, todo, completed);
+                        title.clear();
+                        todo.clear();
+                        completed = false;
+                        add = false;
                 }
             }
             file.close();
@@ -235,7 +239,7 @@ void MainWindow::on_actionopen_triggered()
     }
 }
 
-void MainWindow::addTaskFromFile(const QString& title, const QString& todo, bool completed)
+void MainWindow::addTaskFromFile(const QString title, const QString todo, bool completed)
 {
 
     auto taak = new task();

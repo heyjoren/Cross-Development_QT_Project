@@ -42,7 +42,7 @@ private slots:
 
     void on_actionopen_triggered();
 
-    void addTaskFromFile(const QString &title, const QString &todo, bool);
+    void addTaskFromFile(const QString title, const QString todo, bool);
 
 private:
     Ui::MainWindow *ui;
