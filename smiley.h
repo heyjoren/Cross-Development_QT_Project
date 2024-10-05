@@ -13,6 +13,7 @@ public:
     enum Mood { Blij, Neutraal, Sip };
 
     void setMood(Mood newMood);
+
 protected:
     void paintEvent(QPaintEvent *);
     void paintEye(QPainter *painter, const QPoint &pt, int size, const QPoint &focus = QPoint());
