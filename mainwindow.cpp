@@ -138,21 +138,20 @@ void MainWindow::setTaskScreen()
 
 void MainWindow::on_actionsave_triggered()
 {
+    //TEST
+    qDebug() << "save: " << _fileInfo;
+    //TEST tot hier
 
     if(_fileInfo.filePath().isEmpty())
     {
         auto selectFile = new Selectfile;
 
         selectFile->setWindowTitle("Choose a file to save");
-        // selectFile->exec();
 
         int result = selectFile->exec();
-        qDebug() << "Dialog result:" << result;
-
 
         if (result == QDialog::Accepted)
         {
-            qDebug() << "in de if";
             _fileInfo =  selectFile->getFileInfo();
         }
     }
@@ -246,6 +245,26 @@ void MainWindow::addTaskFromFile(const QString title, const QString todo, bool c
 
 void MainWindow::on_asave_as_triggered()
 {
+    //TEST
+    qDebug() << "save as begin: "<< _fileInfo;
+    //TEST tot hier
+
+    auto selectFile = new Selectfile;
+
+    selectFile->setWindowTitle("Choose a file to save");
+    // selectFile->exec();
+
+    int result = selectFile->exec();
+
+    if (result == QDialog::Accepted)
+    {
+        _fileInfo =  selectFile->getFileInfo();
+    }
+
+    //TEST
+    qDebug() << "save as na window: "<< _fileInfo;
+    //TEST tot hier
+
     // verplicht een file te kiezen.
     QFile file(_fileInfo.filePath());
 
@@ -279,12 +298,9 @@ void MainWindow::saveToFile()
     // selectFile->exec();
 
     int result = selectFile->exec();
-    qDebug() << "Dialog result:" << result;
-
 
     if (result == QDialog::Accepted)
     {
-        qDebug() << "in de if";
         _fileInfo =  selectFile->getFileInfo();
     }
 
