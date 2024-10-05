@@ -1,10 +1,8 @@
-Dit is enkel de file voor op een linux machine een make file te maken.
+De compiler output van het compilen op linux.
+dit is gedaan door mxe.
+(https://mxe.cc/#tutorial)
 
-Dit is de oefening van hoofdstuk 2 dia 21 (de mini assignment)
-
-waarbij je een makefile moet maken moet maken voor een simpele file structuur.
-
-![image](https://github.com/user-attachments/assets/9060f6a1-16f5-456a-ac50-0cecb8d90db9)
-(ik heb enkel de makefile kunnen maken zodat deze een exe maakt. en enkel de target clean gemaakt. de andere moet ik nog doen.)
-
-Je gaat de ze makefile wel kunnen hergebruiken denk ik maar je gaat ze wel moeten aanpassen.
+gedaan door de volgende commands uit te voeren in het folder waar de files in staan.
+export PATH=~/mxe/usr/bin:$PATH
+~/mxe/usr/bin/i686-w64-mingw32.static-qt6-qmake
+make
