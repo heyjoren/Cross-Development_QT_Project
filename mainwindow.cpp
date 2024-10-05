@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // ui->stackedWidget->setCurrentWidget(ui->pageHome);
 
-    connect(ui->pbAddTask, &QPushButton::clicked, this, &MainWindow::addToChangeToTaskScreen);
+    connect(ui->pbAddTask, &QPushButton::clicked, this, &MainWindow::setTaskScreen);
     // connect(ui->aAdd, &QAction::triggered, this, &MainWindow::addToChangeToTaskScreen);
     connect(ui->pbBack, &QPushButton::clicked, this, &MainWindow::setHomeScreen);
     connect(ui->aHomePage, &QAction::triggered, this, &MainWindow::setHomeScreen);
@@ -116,15 +116,6 @@ void MainWindow::on_pbAdd_clicked()
     ui->stackedWidget->setCurrentWidget(ui->pageHome);
 }
 
-void MainWindow::addToChangeToTaskScreen()
-{
-    ui->tEditToDo->setText("");
-    ui->lETitle->setText("");
-
-    // ui->stackedWidget->setCurrentWidget(ui->pageFillIn);
-    setTaskScreen();
-}
-
 void MainWindow::setHomeScreen()
 {
     ui->stackedWidget->setCurrentWidget(ui->pageHome);
@@ -132,6 +123,9 @@ void MainWindow::setHomeScreen()
 
 void MainWindow::setTaskScreen()
 {
+    ui->tEditToDo->setText("");
+    ui->lETitle->setText("");
+
     ui->stackedWidget->setCurrentWidget(ui->pageFillIn);
 }
 
@@ -139,44 +133,24 @@ void MainWindow::setTaskScreen()
 void MainWindow::on_actionsave_triggered()
 {
 
+
     if(_fileInfo.filePath().isEmpty())
     {
         auto selectFile = new Selectfile;
 
         selectFile->setWindowTitle("Choose a file to save");
-        // selectFile->exec();
 
         int result = selectFile->exec();
-        qDebug() << "Dialog result:" << result;
 
 
         if (result == QDialog::Accepted)
         {
-            qDebug() << "in de if";
             _fileInfo =  selectFile->getFileInfo();
+            selectFile->deleteLater();
         }
     }
 
-    QFile file(_fileInfo.filePath());
-
-    // Probeer het bestand te openen voor schrijven
-    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        QTextStream out(&file);
-
-        for (const auto& taak : m_listTask) {
-            out << "Title: " << taak->getTitle() << "\n";
-            out << "Todo: " << taak->getTodo() << "\n";
-            out << "Completed: " << (taak->getKlaarCheckbox()->isChecked() ? "Yes" : "No") << "\n";
-            out << "--------------------------\n";
-        }
-
-        out << "Totaal percentage gedaan: " << _percentage << "%\n";
-    }
-    else
-    {
-        QMessageBox::critical(this, "Error", "Could not open file: " + file.errorString());
-    }
+    saveToFile();
 }
 
 
@@ -260,5 +234,77 @@ void MainWindow::addTaskFromFile(const QString title, const QString todo, bool c
     });
 
     connect(taak, &task::statusChanged, this, &MainWindow::updateSmileyStatus);
+}
+
+
+void MainWindow::on_asave_as_triggered()
+{
+    //TEST
+    qDebug() << "save as begin: "<< _fileInfo;
+    //TEST tot hier
+
+    auto selectFile = new Selectfile;
+
+    selectFile->setWindowTitle("Choose a file to save");
+    // selectFile->exec();
+
+    int result = selectFile->exec();
+
+    if (result == QDialog::Accepted)
+    {
+        _fileInfo =  selectFile->getFileInfo();
+    }
+
+    //TEST
+    qDebug() << "save as na window: "<< _fileInfo;
+    //TEST tot hier
+
+    // verplicht een file te kiezen.
+    QFile file(_fileInfo.filePath());
+
+    // Probeer het bestand te openen voor schrijven
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream out(&file);
+
+        for (const auto& taak : m_listTask) {
+            out << "Title: " << taak->getTitle() << "\n";
+            out << "Todo: " << taak->getTodo() << "\n";
+            out << "Completed: " << (taak->getKlaarCheckbox()->isChecked() ? "Yes" : "No") << "\n";
+            out << "--------------------------\n";
+        }
+
+        out << "Totaal percentage gedaan: " << _percentage << "%\n";
+    }
+    else
+    {
+        QMessageBox::critical(this, "Error", "Could not open file: " + file.errorString());
+    }
+
+    saveToFile();
+}
+
+void MainWindow::saveToFile()
+{
+    QFile file(_fileInfo.filePath());
+
+    // Probeer het bestand te openen voor schrijven
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream out(&file);
+
+        for (const auto& taak : m_listTask) {
+            out << "Title: " << taak->getTitle() << "\n";
+            out << "Todo: " << taak->getTodo() << "\n";
+            out << "Completed: " << (taak->getKlaarCheckbox()->isChecked() ? "Yes" : "No") << "\n";
+            out << "--------------------------\n";
+        }
+
+        out << "Totaal percentage gedaan: " << _percentage << "%\n";
+    }
+    else
+    {
+        QMessageBox::critical(this, "Error", "Could not open file: " + file.errorString());
+    }
 }
 

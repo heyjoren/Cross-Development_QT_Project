@@ -32,8 +32,6 @@ private slots:
 
     void on_pbAdd_clicked();
 
-    void addToChangeToTaskScreen();
-
     void setHomeScreen();
 
     void setTaskScreen();
@@ -43,6 +41,10 @@ private slots:
     void on_actionopen_triggered();
 
     void addTaskFromFile(const QString title, const QString todo, bool);
+
+    void on_asave_as_triggered();
+
+    void saveToFile();
 
 private:
     Ui::MainWindow *ui;

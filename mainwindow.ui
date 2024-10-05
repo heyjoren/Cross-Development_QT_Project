@@ -156,8 +156,9 @@
      <string>File</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="actionsave"/>
     <addaction name="actionopen"/>
+    <addaction name="actionsave"/>
+    <addaction name="asave_as"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -225,6 +226,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="asave_as">
+   <property name="text">
+    <string>save as</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
  </widget>
