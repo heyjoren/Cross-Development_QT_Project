@@ -2,7 +2,11 @@
 #include "ui_mainwindow.h"
 
 /*
- * window icon instellen (smiley tonen inclusief status)
+ * Tool typs zijn voor knoppen niet menu acties.
+ *
+ *
+ * opslaan in txt file.
+ * controleren als ik de eerste taak toevoeg dat het dan sip wordt.
  * */
 
 MainWindow::MainWindow(QWidget *parent)
@@ -57,7 +61,6 @@ void MainWindow::onTaskDeleted(task* taak)
 
 void MainWindow::updateSmileyStatus()
 {
-    qDebug() << "in de functie updateSmileyStatus";
     int totaal = m_listTask.count();
     int aangevinkt = 0;
 
@@ -72,27 +75,19 @@ void MainWindow::updateSmileyStatus()
         return;
     }
 
-    double percentage = static_cast<double>(aangevinkt) / totaal * 100;
+    _percentage = static_cast<double>(aangevinkt) / totaal * 100;
 
-    if (percentage < 40) {
+    if (_percentage < 40) {
         ui->smiley->setMood(Smiley::Sip);
 
-    } else if (percentage >= 40 && percentage <= 60) {
+    } else if (_percentage >= 40 && _percentage <= 60) {
         ui->smiley->setMood(Smiley::Neutraal);
 
-    } else if (percentage > 60) {
+    } else if (_percentage > 60) {
         ui->smiley->setMood(Smiley::Blij);
     }
 
 }
-
-
-// void MainWindow::on_pbBack_clicked()
-// {
-
-//     ui->stackedWidget->setCurrentWidget(ui->pageHome);
-// }
-
 
 void MainWindow::on_pbAdd_clicked()
 {
@@ -115,6 +110,8 @@ void MainWindow::on_pbAdd_clicked()
     taak->SetTodo(ui->tEditToDo->toPlainText());
 
     connect(taak, &task::statusChanged, this, &MainWindow::updateSmileyStatus);
+
+    updateSmileyStatus();
 
     ui->stackedWidget->setCurrentWidget(ui->pageHome);
 }
@@ -141,10 +138,123 @@ void MainWindow::setTaskScreen()
 
 void MainWindow::on_actionsave_triggered()
 {
-    auto selectFile = new Selectfile;
 
-    selectFile->setWindowTitle("Choose a file to save");
-    // selectFile->show();
-    selectFile->exec();
+    if(_fileInfo.filePath().isEmpty())
+    {
+        auto selectFile = new Selectfile;
+
+        selectFile->setWindowTitle("Choose a file to save");
+        // selectFile->exec();
+
+        int result = selectFile->exec();
+        qDebug() << "Dialog result:" << result;
+
+
+        if (result == QDialog::Accepted)
+        {
+            qDebug() << "in de if";
+            _fileInfo =  selectFile->getFileInfo();
+        }
+    }
+
+    QFile file(_fileInfo.filePath());
+
+    // Probeer het bestand te openen voor schrijven
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream out(&file);
+
+        for (const auto& taak : m_listTask) {
+            out << "Title: " << taak->getTitle() << "\n";
+            out << "Todo: " << taak->getTodo() << "\n";
+            out << "Completed: " << (taak->getKlaarCheckbox()->isChecked() ? "Yes" : "No") << "\n";
+            out << "--------------------------\n";
+        }
+
+        out << "Totaal percentage gedaan: " << _percentage << "%\n";
+    }
+    else
+    {
+        QMessageBox::critical(this, "Error", "Could not open file: " + file.errorString());
+    }
+}
+
+
+void MainWindow::on_actionopen_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(
+        this,
+        "Open File",
+        "",
+        "Text Files (*.txt);;All Files (*)" // Voeg hier het filter toe
+        );
+
+    if (fileName.isEmpty()) {
+        QMessageBox::critical(this, "Error", "No file selected ");
+    }
+    else
+    {
+        QFileInfo fileInfo (fileName);
+
+        _fileInfo = fileInfo;
+
+        QFile file(_fileInfo.filePath());
+
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QMessageBox::critical(this, "Error", "Could not open file: " + file.errorString());
+        }
+        else
+        {
+            QTextStream in(&file);
+
+            QString title;
+            QString todo;
+            bool completed = false;
+
+            while (!in.atEnd()) {
+                QString line = in.readLine();
+                if (line.startsWith("Title: ")) {
+                    if (!title.isEmpty()) {
+                        addTaskFromFile(title, todo, completed);
+                        title.clear();
+                        todo.clear();
+                        completed = false;
+                    }
+                    title = line.mid(7);
+                } else if (line.startsWith("Todo: ")) {
+                    todo = line.mid(6);
+                } else if (line.startsWith("Completed: ")) {
+                    QString status = line.mid(11);
+                    completed = (status == "Yes");
+                }
+            }
+            file.close();
+
+            updateSmileyStatus();
+        }
+    }
+}
+
+void MainWindow::addTaskFromFile(const QString& title, const QString& todo, bool completed)
+{
+
+    auto taak = new task();
+    taak->SetTitle(title);
+    taak->SetTodo(todo);
+    taak->getKlaarCheckbox()->setChecked(completed);
+
+    m_listTask.append(taak);
+    ui->tasksLayout->insertWidget(ui->tasksLayout->count() - 1, taak);
+
+    connect(taak->getDeleteButton(), &QPushButton::clicked, this, [=]() {
+        onTaskDeleted(taak);
+        emit taak->statusChanged();
+    });
+
+    connect(taak->getKlaarCheckbox(), &QCheckBox::stateChanged, this, [=]() {
+        emit taak->statusChanged();
+    });
+
+    connect(taak, &task::statusChanged, this, &MainWindow::updateSmileyStatus);
 }
 
