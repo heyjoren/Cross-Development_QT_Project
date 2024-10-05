@@ -4,10 +4,7 @@
 /*
  * Tool typs zijn voor knoppen niet menu acties.
  *
- *
- * opslaan in txt file.
- * controleren als ik de eerste taak toevoeg dat het dan sip wordt.
- * */
+*/
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,22 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setWindowTitle("To do list");
 
-    // ui->stackedWidget->setCurrentWidget(ui->pageHome);
-
     connect(ui->pbAddTask, &QPushButton::clicked, this, &MainWindow::setTaskScreen);
-    // connect(ui->aAdd, &QAction::triggered, this, &MainWindow::addToChangeToTaskScreen);
     connect(ui->pbBack, &QPushButton::clicked, this, &MainWindow::setHomeScreen);
     connect(ui->aHomePage, &QAction::triggered, this, &MainWindow::setHomeScreen);
     connect(ui->aAddTask, &QAction::triggered, this, &MainWindow::setTaskScreen);
-
-    //TEST
-
-    // tooltip is ingesteld via de designer
-    ui->aAddTask->setToolTip("<p>werkt dit wel</p>");
-
-    //verwijder test en test in header en op regel 43
-    test = 0;
-    // TEST tot hier
 
     connect(ui->pbAddTask, &QPushButton::clicked,  this, &MainWindow::updateSmileyStatus);
 
@@ -160,7 +145,7 @@ void MainWindow::on_actionopen_triggered()
         this,
         "Open File",
         "",
-        "Text Files (*.txt);;All Files (*)" // Voeg hier het filter toe
+        "Text Files (*.txt);;All Files (*)"
         );
 
     if (fileName.isEmpty()) {
@@ -198,7 +183,6 @@ void MainWindow::on_actionopen_triggered()
                     add = true;
                 }
                 if (add){
-                    qDebug() << "titel: " << title << "todo: " << todo <<"compl: " << completed;
                         addTaskFromFile(title, todo, completed);
                         title.clear();
                         todo.clear();
@@ -239,46 +223,17 @@ void MainWindow::addTaskFromFile(const QString title, const QString todo, bool c
 
 void MainWindow::on_asave_as_triggered()
 {
-    //TEST
-    qDebug() << "save as begin: "<< _fileInfo;
-    //TEST tot hier
+    // verplicht een file te kiezen.
 
     auto selectFile = new Selectfile;
 
     selectFile->setWindowTitle("Choose a file to save");
-    // selectFile->exec();
 
     int result = selectFile->exec();
 
     if (result == QDialog::Accepted)
     {
         _fileInfo =  selectFile->getFileInfo();
-    }
-
-    //TEST
-    qDebug() << "save as na window: "<< _fileInfo;
-    //TEST tot hier
-
-    // verplicht een file te kiezen.
-    QFile file(_fileInfo.filePath());
-
-    // Probeer het bestand te openen voor schrijven
-    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        QTextStream out(&file);
-
-        for (const auto& taak : m_listTask) {
-            out << "Title: " << taak->getTitle() << "\n";
-            out << "Todo: " << taak->getTodo() << "\n";
-            out << "Completed: " << (taak->getKlaarCheckbox()->isChecked() ? "Yes" : "No") << "\n";
-            out << "--------------------------\n";
-        }
-
-        out << "Totaal percentage gedaan: " << _percentage << "%\n";
-    }
-    else
-    {
-        QMessageBox::critical(this, "Error", "Could not open file: " + file.errorString());
     }
 
     saveToFile();

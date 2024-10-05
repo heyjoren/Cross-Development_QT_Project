@@ -71,7 +71,7 @@ void Selectfile::on_pbSave_clicked()
 
             QFile file(path);
             if (file.open(QIODevice::WriteOnly)) {
-                file.close(); // Sluit het bestand onmiddellijk nadat het is aangemaakt
+                file.close();
             } else {
                 QMessageBox::critical(this, "Error", "Could not create file: " + file.errorString());
             }
@@ -86,8 +86,7 @@ void Selectfile::chooseFile()
         this,
         "Save File",
         "",
-        "Text Files (*.txt);;All Files (*)"
-        );
+        "Text Files (*.txt);;All Files (*)");
 
     ui->lEFile->setText(path);
 }
