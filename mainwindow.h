@@ -28,8 +28,6 @@ private slots:
 
     void updateSmileyStatus();
 
-    // void on_pbBack_clicked();
-
     void on_pbAdd_clicked();
 
     void setHomeScreen();
@@ -49,11 +47,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QList<task*> m_listTask;
-
-
-    //TEST
-    int test;
-    //TEST tot hier
 
     QFileInfo _fileInfo;
 

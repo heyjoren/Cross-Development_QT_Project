@@ -26,7 +26,7 @@ void Smiley::paintEvent(QPaintEvent *pe) {
     QPoint center = boundingBox.center();
     int size = qMin(boundingBox.width(), boundingBox.height());
 
-    // draw round face with cen in 'tercenter' and diameter of 'size'
+    // draw round face with center in 'center' and diameter of 'size'
     QPen pen;
     pen.setWidth(2);
     pen.setColor(Qt::black);
@@ -46,7 +46,6 @@ void Smiley::paintEvent(QPaintEvent *pe) {
         break;
     }
 
-    // painter.setBrush(Qt::yellow);
     painter.drawEllipse(center, size/2, size/2);
 
     // draw eyes
@@ -123,7 +122,6 @@ void Smiley::paintEye(QPainter *painter, const QPoint &pt, int size, const QPoin
 
 
 void Smiley::paintSmile(QPainter *painter, const QRect &r) {
-    // draw an arc inside the area of r
 
     QPen pen;
     pen.setWidth(2);
@@ -144,7 +142,6 @@ void Smiley::paintSmile(QPainter *painter, const QRect &r) {
 
         adjustedRect = r.adjusted(0, smileOffset, 0, smileOffset);
         painter->drawArc(adjustedRect, startAngle, spanAngle);
-        // painter->restore();
         break;
     case Neutraal:
         smileOffset = 0;
@@ -152,7 +149,6 @@ void Smiley::paintSmile(QPainter *painter, const QRect &r) {
         startPoint = QPoint(r.left(), r.center().y() + smileOffset);
         endPoint = QPoint(r.right(), r.center().y() + smileOffset);
         painter->drawLine(startPoint, endPoint);
-        // painter->restore();
         break;
     case Sip:
         startAngle = 0;
@@ -161,7 +157,6 @@ void Smiley::paintSmile(QPainter *painter, const QRect &r) {
 
         adjustedRect = r.adjusted(0, smileOffset, 0, smileOffset);
         painter->drawArc(adjustedRect, startAngle, spanAngle);
-        // painter->restore();
         break;
     }
 }
