@@ -21,6 +21,10 @@ QFileInfo Selectfile::getFileInfo()
 {
     QFileInfo file (ui->lEFile->text());
 
+    if (ui->lEFile->text().isEmpty()) {
+        return QFileInfo();
+    }
+
     return file;
 }
 
@@ -34,7 +38,7 @@ void Selectfile::on_pbCancel_clicked()
     {
         cancel->close();
         ui->lEFile->clear();
-        this->close();
+        this->reject();
     }
     else
     {
