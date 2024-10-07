@@ -140,10 +140,10 @@ void MainWindow::on_actionsave_triggered()
         {
             _fileInfo =  selectFile->getFileInfo();
             selectFile->deleteLater();
+            saveToFile();
         }
     }
 
-    saveToFile();
 }
 
 
@@ -242,9 +242,9 @@ void MainWindow::on_asave_as_triggered()
     if (result == QDialog::Accepted)
     {
         _fileInfo =  selectFile->getFileInfo();
+        saveToFile();
     }
 
-    saveToFile();
 }
 
 void MainWindow::saveToFile()
@@ -267,6 +267,7 @@ void MainWindow::saveToFile()
     }
     else
     {
+        qDebug() << "het probleem is hier";
         QMessageBox::critical(this, "Error", "Could not open file: " + file.errorString());
     }
 }
