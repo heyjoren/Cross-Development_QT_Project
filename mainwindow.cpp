@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setWindowTitle("To do list");
 
+    setHomeScreen();
+
     connect(ui->pbAddTask, &QPushButton::clicked, this, &MainWindow::setTaskScreen);
     connect(ui->pbBack, &QPushButton::clicked, this, &MainWindow::setHomeScreen);
     connect(ui->aHomePage, &QAction::triggered, this, &MainWindow::setHomeScreen);
@@ -76,29 +78,35 @@ void MainWindow::updateSmileyStatus()
 
 void MainWindow::on_pbAdd_clicked()
 {
-    auto taak = new task();
-    m_listTask.append(taak);
+    if(ui->lETitle->text().isEmpty())
+    {
+        QMessageBox::critical(this, "Error", "Het titelveld mag niet leeg zijn. Vul een titel in voordat je een taak toevoegt.");
+    }
+    else {
+        auto taak = new task();
+        m_listTask.append(taak);
 
-    taak->SetTitle(ui->lETitle->text());
+        taak->SetTitle(ui->lETitle->text());
 
-    ui->tasksLayout->insertWidget(ui->tasksLayout->count() -1, taak);
+        ui->tasksLayout->insertWidget(ui->tasksLayout->count() -1, taak);
 
-    connect(taak->getDeleteButton(), &QPushButton::clicked, this, [=]() {
-        onTaskDeleted(taak);
-        emit taak->statusChanged();
-    });
+        connect(taak->getDeleteButton(), &QPushButton::clicked, this, [=]() {
+            onTaskDeleted(taak);
+            emit taak->statusChanged();
+        });
 
-    connect(taak->getKlaarCheckbox(), &QCheckBox::stateChanged, this, [=]() {
-        emit taak->statusChanged();
-    });
+        connect(taak->getKlaarCheckbox(), &QCheckBox::stateChanged, this, [=]() {
+            emit taak->statusChanged();
+        });
 
-    taak->SetTodo(ui->tEditToDo->toPlainText());
+        taak->SetTodo(ui->tEditToDo->toPlainText());
 
-    connect(taak, &task::statusChanged, this, &MainWindow::updateSmileyStatus);
+        connect(taak, &task::statusChanged, this, &MainWindow::updateSmileyStatus);
 
-    updateSmileyStatus();
+        updateSmileyStatus();
 
-    ui->stackedWidget->setCurrentWidget(ui->pageHome);
+        ui->stackedWidget->setCurrentWidget(ui->pageHome);
+    }
 }
 
 void MainWindow::setHomeScreen()
